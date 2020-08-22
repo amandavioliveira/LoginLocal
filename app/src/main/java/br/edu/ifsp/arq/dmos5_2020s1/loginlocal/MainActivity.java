@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
     //Objetos utilizados para armazenar e recuperar os dados
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Vamos instanciar as preferencias em modo privado, ou seja, somente acessíveis
         //ao próprio app.
         mSharedPreferences = this.getPreferences(MODE_PRIVATE);
+        //mSharedPreferences = this.getSharedPreferences(getString(R.string.file_preferences), MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
     @Override
@@ -57,10 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         Log.i(getString(R.string.tag), "Classe: " + getClass().getSimpleName() + "| Método : onResume()");
-
         //Vamos verificar se o usuário possui preferências
         verificarPreferencias();
-
         super.onResume();
     }
     @Override
@@ -93,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             abrirBoasVindas();
             return;
         }
+        if(view == novoUsuarioTextView){
+            Intent in = new Intent(this, NovoUsuarioActivity.class);
+            startActivity(in);
+            return;
+        }
     }
     private void abrirBoasVindas(){
         Intent in = new Intent(this, BemVindoActivity.class);
@@ -121,10 +124,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mEditor.commit();
         }
     }
-
     /*
-        Aqui recuperamos as preferências do usuário, e caso existam (boolean lembrar) atualizamos
-        os dados na tela da activity.
+    Aqui recuperamos as preferências do usuário, e caso existam (boolean lembrar) atualizamos
+    os dados na tela da activity.
     */
     private void verificarPreferencias() {
         usuario = mSharedPreferences.getString(getString(R.string.key_usuario), "");
